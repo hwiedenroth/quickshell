@@ -1,0 +1,39 @@
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# QML / Qt / build artifacts
+.qmlls.ini
+*.qmlc
+*.jsc
+*.log
+build/
+build-*/
+out/
+dist/
+debug/
+release/
+.cache/
+cmake-build*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+compile_commands.json
+*.user
+*.autosave
+
+# Runtime / local generated files
+*.tmp
+*.temp
+*.pid
+*.sock
+__pycache__/
+venv/
+.env

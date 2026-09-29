@@ -10,7 +10,6 @@ Item {
         id: workspaceWidget
         anchors {
             left: parent.left
-            leftMargin: Theme.widgetSpacing
             verticalCenter: parent.verticalCenter
         }
     }

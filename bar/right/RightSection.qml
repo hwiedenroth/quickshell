@@ -21,7 +21,6 @@ Item {
         id: shutdownWidget
         anchors {
             right: parent.right
-            rightMargin: Theme.widgetSpacing
             verticalCenter: parent.verticalCenter
         }
     }

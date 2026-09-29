@@ -15,10 +15,19 @@ Scope {
             screen: modelData
             color: "transparent"
 
+            implicitWidth: screen.width
+            implicitHeight: Theme.widgetHeight
+
             anchors {
                 top: true
                 left: true
                 right: true
+            }
+
+            margins {
+                left: Theme.widgetSpacing
+                right: Theme.widgetSpacing
+                top: Theme.widgetSpacing
             }
 
             LeftSection {

@@ -4,13 +4,13 @@ import QtQuick
 import "../.."
 
 Item {
-  id: root
+  id: idleInhibitorWidget
 
-  implicitWidth: inhibitorButton.implicitWidth
-  implicitHeight: inhibitorButton.implicitHeight
+  width: Theme.widgetWidth
+  height: Theme.widgetHeight
 
   IdleInhibitor {
-    window: root.QsWindow.window
+    window: idleInhibitorWidget.QsWindow.window
     enabled: inhibitorButton.inhibited
   }
 
@@ -19,27 +19,30 @@ Item {
 
     property bool inhibited: false
 
-    implicitWidth: Theme.powerButtonWidth
-    implicitHeight: Theme.widgetHeight
-    anchors.centerIn: parent
+    anchors {
+      fill: parent
+      centerIn: parent
+    }
     radius: Theme.borderRadius
-    color: buttonMouseArea.containsMouse ? Theme.surface1 : Theme.surface0
+    color: hover.hovered ? Theme.surface1 : Theme.surface0
+
+    HoverHandler { id: hover }
+
+    TapHandler {
+      cursorShape: Qt.PointingHandCursor
+      onTapped: {
+        inhibitorButton.inhibited = !inhibitorButton.inhibited
+      }
+    }
 
     Text {
       anchors.centerIn: parent
       text: inhibitorButton.inhibited ? "" : ""
       color: inhibitorButton.inhibited ? Theme.blue : Theme.text
-      font.family: Theme.fontFamily
-      font.pixelSize: Theme.fontSize + 2
-    }
-
-    MouseArea {
-      id: buttonMouseArea
-
-      anchors.fill: parent
-      hoverEnabled: true
-      cursorShape: Qt.PointingHandCursor
-      onClicked: inhibitorButton.inhibited = !inhibitorButton.inhibited
+      font {
+          family: Theme.fontFamily
+          pixelSize: Theme.fontSize
+      }
     }
   }
 }

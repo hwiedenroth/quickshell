@@ -13,7 +13,6 @@ Scope {
             required property var modelData
 
             screen: modelData
-            implicitHeight: Theme.barHeight
             color: "transparent"
 
             anchors {

@@ -1,13 +1,17 @@
 import QtQuick
-
 import "../../widgets/workspace"
+import "../.."
 
 Item {
     implicitWidth: workspaceWidget.implicitWidth
-    implicitHeight: workspaceWidget.implicitHeight
+    implicitHeight: Theme.widgetHeight
 
     WorkspaceWidget {
         id: workspaceWidget
-        anchors.left: parent.left
+        anchors {
+            left: parent.left
+            leftMargin: Theme.widgetSpacing
+            verticalCenter: parent.verticalCenter
+        }
     }
 }

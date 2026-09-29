@@ -7,11 +7,14 @@ Singleton {
 	readonly property string fontFamily: "JetBrainsMono Nerd Font"
 	readonly property string localeName: "de_DE"
 	readonly property int fontSize: 13
+	
 	readonly property real borderRadius: 5
-	readonly property int barHeight: 30
-	readonly property int widgetHeight: 26
-	readonly property int widgetHorizontalPadding: 8
-	readonly property int powerButtonWidth: 30
+
+    readonly property int widgetWidth: 30
+	readonly property int widgetHeight: 30
+
+	readonly property int widgetSpacing: 4
+
 	readonly property int popupWidth: 160
 	readonly property int popupItemHeight: 30
 	readonly property int popupMargin: 6

@@ -13,6 +13,10 @@ Quickshell documentation: [quickshell.org/docs](https://quickshell.org/docs/)
 
 ## Run
 
+> [!IMPORTANT]
+> To prevent issues install the files into the quickshell default directory `~/.config/quickshell` or create a Symbolic Link
+> `ln -s $PWD/quickshell ~/.config/quickshell`
+
 From the project directory, start the shell with:
 
 ```sh
@@ -27,7 +31,14 @@ hl.on("hyprland.start", function ()
 end)
 ```
 
-To start it as systemd service, add tge file `~/.config/systemd/user/quickshell.service`, add the content:
+Bind the launcher to a key in `~/.config/hypr/hyprland.lua`:
+
+```lua
+hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("quickshell ipc call launcher toggle")) -- dwindle only
+
+```
+
+To start it as systemd service, add the file `~/.config/systemd/user/quickshell.service`, add the content:
 
 ```
 [Unit]
@@ -38,7 +49,7 @@ After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/quickshell --path $PWD/shell.qml
+ExecStart=/usr/bin/quickshell
 ExecReload=kill -SIGUSR2 $MAINPID
 Restart=on-failure
 

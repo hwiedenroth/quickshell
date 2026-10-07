@@ -138,7 +138,7 @@ Scope {
     screen: Quickshell.screens[0]
     visible: launcher.opened
     color: "transparent"
-    implicitWidth: screen.width
+    implicitWidth: screen.width 
     implicitHeight: screen.height
 
     anchors {
@@ -148,6 +148,13 @@ Scope {
       right: true
     }
 
+    margins {
+        left: Theme.widgetSpacing
+        right: Theme.widgetSpacing
+        top: Theme.widgetSpacing
+        bottom: Theme.widgetSpacing
+    }
+
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: launcher.opened ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
     WlrLayershell.namespace: "quickshell-launcher"
@@ -155,6 +162,7 @@ Scope {
     Rectangle {
       anchors.fill: parent
       color: "#99000000"
+      radius: Theme.borderRadius
 
       TapHandler {
         onTapped: (eventPoint, button) => {

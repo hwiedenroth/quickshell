@@ -18,9 +18,9 @@ Item {
       centerIn: parent
     }
     radius: Theme.borderRadius
-    color: hover.hovered ? Theme.surface1 : Theme.surface0
+    color: shutdownWidgetHover.hovered ? Theme.surface1 : Theme.surface0
 
-    HoverHandler { id: hover }
+    HoverHandler { id: shutdownWidgetHover }
 
     TapHandler {
       cursorShape: Qt.PointingHandCursor
@@ -85,14 +85,14 @@ Item {
             Layout.fillWidth: true
             Layout.preferredHeight: Theme.popupItemHeight
             radius: 3
-            color: hover.hovered ? Theme.surface0 : "transparent"
+            color: shutdownHover.hovered ? Theme.surface0 : "transparent"
 
             function activate() {
               powerMenu.visible = false
               actionProcess.running = true
             }
 
-            HoverHandler { id: hover }
+            HoverHandler { id: shutdownHover }
 
             TapHandler {
               cursorShape: Qt.PointingHandCursor
@@ -109,7 +109,7 @@ Item {
               color: Theme.text
               font.family: Theme.fontFamily
               font.pixelSize: Theme.fontSize
-              font.weight: hover.hovered ? Font.Bold : Font.Normal
+              font.weight: shutdownHover.hovered ? Font.Bold : Font.Normal
             }
 
             Process {

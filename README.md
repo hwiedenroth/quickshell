@@ -49,6 +49,7 @@ After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
+KillMode=process
 ExecStart=/usr/bin/quickshell
 ExecReload=kill -SIGUSR2 $MAINPID
 Restart=on-failure

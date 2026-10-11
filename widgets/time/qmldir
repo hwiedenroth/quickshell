@@ -1,0 +1,4 @@
+module time
+singleton Time 1.0 Time.qml
+ClockWidget 1.0 ClockWidget.qml
+CalendarPanel 1.0 CalendarPanel.qml

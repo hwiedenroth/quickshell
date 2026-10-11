@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
@@ -295,86 +297,87 @@ Scope {
                 model: launcher.filteredEntries
 
                 delegate: Rectangle {
+                  id: resultDelegate
                   required property var modelData
                   required property int index
 
-                Layout.fillWidth: true
-                Layout.preferredHeight: 42
-                radius: 3
-                color: index === launcher.selectedIndex || rowHover.hovered ? Theme.surface0 : "transparent"
-
-              HoverHandler {
-                id: rowHover
-                cursorShape: Qt.PointingHandCursor
-                onHoveredChanged: {
-                  if (hovered)
-                    launcher.selectedIndex = index
-                }
-              }
-
-              RowLayout {
-                anchors.fill: parent
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                spacing: 10
-
-                Rectangle {
-                  Layout.preferredWidth: 26
-                  Layout.preferredHeight: 26
-                  radius: 4
-                  color: index === launcher.selectedIndex ? Theme.teal : Theme.surface1
-
-                  IconImage {
-                    id: appIcon
-
-                    anchors.centerIn: parent
-                    width: 22
-                    height: 22
-                    asynchronous: true
-                    source: Quickshell.iconPath(modelData.icon, "application-x-executable")
-                  }
-
-                  Text {
-                    anchors.centerIn: parent
-                    text: modelData.name.slice(0, 1).toUpperCase()
-                    color: Theme.base
-                    font.family: Theme.fontFamily
-                    font.pixelSize: 13
-                    font.bold: true
-                    visible: appIcon.status !== Image.Ready
-                  }
-                }
-
-                ColumnLayout {
                   Layout.fillWidth: true
-                  spacing: 1
+                  Layout.preferredHeight: 42
+                  radius: 3
+                  color: resultDelegate.index === launcher.selectedIndex || rowHover.hovered ? Theme.surface0 : "transparent"
 
-                  Text {
-                    Layout.fillWidth: true
-                    text: modelData.name
-                    color: Theme.text
-                    elide: Text.ElideRight
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSize
+                  HoverHandler {
+                    id: rowHover
+                    cursorShape: Qt.PointingHandCursor
+                    onHoveredChanged: {
+                      if (hovered)
+                        launcher.selectedIndex = resultDelegate.index
+                    }
                   }
 
-                  Text {
-                    Layout.fillWidth: true
-                    text: modelData.genericName || modelData.comment || modelData.id
-                    color: Theme.subtext0
-                    elide: Text.ElideRight
-                    font.family: Theme.fontFamily
-                    font.pixelSize: 11
-                  }
-                }
-              }
+                  RowLayout {
+                    anchors.fill: parent
+                    anchors.leftMargin: 10
+                    anchors.rightMargin: 10
+                    spacing: 10
 
-                TapHandler {
-                  onTapped: {
-                    modelData.execute()
-                    launcher.hide()
+                    Rectangle {
+                      Layout.preferredWidth: 26
+                      Layout.preferredHeight: 26
+                      radius: 4
+                      color: resultDelegate.index === launcher.selectedIndex ? Theme.teal : Theme.surface1
+
+                      IconImage {
+                        id: appIcon
+
+                        anchors.centerIn: parent
+                        width: 22
+                        height: 22
+                        asynchronous: true
+                        source: Quickshell.iconPath(resultDelegate.modelData.icon, "application-x-executable")
+                      }
+
+                      Text {
+                        anchors.centerIn: parent
+                        text: resultDelegate.modelData.name.slice(0, 1).toUpperCase()
+                        color: Theme.base
+                        font.family: Theme.fontFamily
+                        font.pixelSize: 13
+                        font.bold: true
+                        visible: appIcon.status !== Image.Ready
+                      }
+                    }
+
+                    ColumnLayout {
+                      Layout.fillWidth: true
+                      spacing: 1
+
+                      Text {
+                        Layout.fillWidth: true
+                        text: resultDelegate.modelData.name
+                        color: Theme.text
+                        elide: Text.ElideRight
+                        font.family: Theme.fontFamily
+                        font.pixelSize: Theme.fontSize
+                      }
+
+                      Text {
+                        Layout.fillWidth: true
+                        text: resultDelegate.modelData.genericName || resultDelegate.modelData.comment || resultDelegate.modelData.id
+                        color: Theme.subtext0
+                        elide: Text.ElideRight
+                        font.family: Theme.fontFamily
+                        font.pixelSize: 11
+                      }
+                    }
                   }
-                }
+
+                  TapHandler {
+                    onTapped: {
+                      resultDelegate.modelData.execute()
+                      launcher.hide()
+                    }
+                  }
                 }
               }
             }
@@ -442,12 +445,13 @@ Scope {
                   model: launcher.categories
 
                   delegate: Rectangle {
+                    id: categoryDelegate
                     required property string modelData
 
                     Layout.fillWidth: true
                     Layout.preferredHeight: 30
                     radius: 3
-                    color: launcher.selectedCategories.indexOf(modelData) >= 0 || categoryHover.hovered
+                    color: launcher.selectedCategories.indexOf(categoryDelegate.modelData) >= 0 || categoryHover.hovered
                       ? Theme.surface0 : "transparent"
 
                     HoverHandler {
@@ -460,15 +464,15 @@ Scope {
                       anchors.leftMargin: 8
                       anchors.rightMargin: 6
                       verticalAlignment: Text.AlignVCenter
-                      text: modelData
-                      color: launcher.selectedCategories.indexOf(modelData) >= 0 ? Theme.teal : Theme.text
+                      text: categoryDelegate.modelData
+                      color: launcher.selectedCategories.indexOf(categoryDelegate.modelData) >= 0 ? Theme.teal : Theme.text
                       elide: Text.ElideRight
                       font.family: Theme.fontFamily
                       font.pixelSize: 11
                     }
 
                     TapHandler {
-                      onTapped: launcher.toggleCategory(modelData)
+                      onTapped: launcher.toggleCategory(categoryDelegate.modelData)
                     }
                   }
                 }

@@ -1,0 +1,2 @@
+module shutdown
+ShutdownWidget 1.0 ShutdownWidget.qml

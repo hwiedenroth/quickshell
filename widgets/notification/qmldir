@@ -1,0 +1,4 @@
+module notification
+NotificationCard 1.0 NotificationCard.qml
+NotificationTheme 1.0 NotificationTheme.qml
+NotificationWidget 1.0 NotificationWidget.qml

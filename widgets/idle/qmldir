@@ -1,0 +1,2 @@
+module idle
+IdleInhibitorWidget 1.0 IdleInhibitorWidget.qml

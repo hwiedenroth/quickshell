@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import Quickshell
 import Quickshell.Io
 import QtQuick
@@ -80,6 +82,7 @@ Item {
           ]
 
           delegate: Rectangle {
+            id: actionDelegate
             required property var modelData
 
             Layout.fillWidth: true
@@ -97,7 +100,7 @@ Item {
             TapHandler {
               cursorShape: Qt.PointingHandCursor
               onTapped: {
-                activate()
+                actionDelegate.activate()
               }
             }
 
@@ -105,7 +108,7 @@ Item {
               anchors.fill: parent
               anchors.leftMargin: 8
               verticalAlignment: Text.AlignVCenter
-              text: modelData.label
+              text: actionDelegate.modelData.label
               color: Theme.text
               font.family: Theme.fontFamily
               font.pixelSize: Theme.fontSize
@@ -114,7 +117,7 @@ Item {
 
             Process {
               id: actionProcess
-              command: modelData.command
+              command: actionDelegate.modelData.command
             }
           }
         }

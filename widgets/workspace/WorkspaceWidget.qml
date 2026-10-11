@@ -1,4 +1,5 @@
-import Quickshell
+pragma ComponentBehavior: Bound
+
 import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
@@ -89,6 +90,7 @@ Item {
                 model: Hyprland.workspaces.values
 
                 delegate: Rectangle {
+                    id: workspaceDelegate
                     required property var modelData
                     readonly property var workspace: modelData
                     readonly property bool isActive: workspace === Hyprland.focusedWorkspace
@@ -97,18 +99,17 @@ Item {
                     implicitHeight: 26
                     color: hover.hovered ? Theme.surface1 : "transparent"
 
-                    // Moderne Alternative zu MouseArea (Speichersparend, kein anchors.fill nötig)
                     HoverHandler { id: hover }
 
                     TapHandler {
                         cursorShape: Qt.PointingHandCursor
-                        onTapped: workspace.activate()
+                        onTapped: workspaceDelegate.workspace.activate()
                     }
 
                     Text {
                         id: label
                         anchors.centerIn: parent
-                        text: workspace.name || workspace.id
+                        text: workspaceDelegate.workspace.name || workspaceDelegate.workspace.id
                         color: Theme.text
                         font {
                             family: Theme.fontFamily
@@ -123,7 +124,7 @@ Item {
                             bottom: parent.bottom
                         }
                         height: 3
-                        color: isActive ? Theme.lavender : "transparent"
+                        color: workspaceDelegate.isActive ? Theme.lavender : "transparent"
                     }
                 }
             }
@@ -131,8 +132,8 @@ Item {
 
             // Plus-Button für neue Workspaces im exakt selben Design
             Rectangle {
-                width: 26
-                height: 26
+                Layout.preferredWidth: 26
+                Layout.preferredHeight: 26
                 color: plusHover.hovered ? Theme.surface1 : "transparent"
 
                 HoverHandler { id: plusHover }
@@ -144,7 +145,7 @@ Item {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "" 
+                    text: ""
                     color: Theme.text
                     font {
                         family: Theme.fontFamily

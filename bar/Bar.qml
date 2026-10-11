@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Services.Notifications
 import ".."
 
 import "center"
@@ -6,6 +7,13 @@ import "left"
 import "right"
 
 Scope {
+    NotificationServer {
+        id: barNotificationServer
+        persistenceSupported: true
+        actionsSupported: true
+        onNotification: notification => notification.tracked = true
+    }
+
     Variants {
         model: Quickshell.screens
 
@@ -35,6 +43,7 @@ Scope {
             }
 
             CenterSection {
+                notificationServer: barNotificationServer
                 anchors.centerIn: parent
             }
 

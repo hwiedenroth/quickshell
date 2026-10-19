@@ -16,6 +16,7 @@ Scope {
   property int selectedIndex: 0
   property var categories: []
   property var selectedCategories: []
+  property bool categoriesExpanded: false
 
   function ensureSelectedVisible() {
     if (!filteredEntries.length)
@@ -112,6 +113,7 @@ Scope {
 
   function show() {
     opened = true
+    categoriesExpanded = false
     searchField.text = ""
     refreshMatches()
     Qt.callLater(() => searchField.forceActiveFocus())
@@ -121,6 +123,15 @@ Scope {
     opened = false
     selectedCategories = []
     refreshMatches()
+  }
+
+  Connections {
+    target: DesktopEntries.applications
+
+    function onValuesChanged() {
+      launcher.refreshCategories()
+      launcher.refreshMatches()
+    }
   }
 
   IpcHandler {
@@ -397,33 +408,103 @@ Scope {
         }
 
         Rectangle {
+          id: categorySidebar
+
           Layout.fillHeight: true
-          Layout.preferredWidth: 176
+          Layout.preferredWidth: launcher.categoriesExpanded ? 176 : 32
           radius: Theme.borderRadius
           color: Theme.mantle
+          clip: true
+
+          HoverHandler {
+            cursorShape: launcher.categoriesExpanded ? Qt.ArrowCursor : Qt.PointingHandCursor
+          }
+
+          TapHandler {
+            enabled: !launcher.categoriesExpanded
+            onTapped: launcher.categoriesExpanded = true
+          }
+
+          Text {
+            anchors.centerIn: parent
+            width: 120
+            height: 24
+            rotation: -90
+            text: "Kategorien"
+            color: Theme.subtext0
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.family: Theme.fontFamily
+            font.pixelSize: 11
+            font.bold: true
+            visible: !launcher.categoriesExpanded
+          }
+
+          Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 6
+            text: ">"
+            color: Theme.subtext0
+            horizontalAlignment: Text.AlignHCenter
+            font.family: Theme.fontFamily
+            font.pixelSize: 14
+            font.bold: true
+            visible: !launcher.categoriesExpanded
+          }
 
           ColumnLayout {
             anchors.fill: parent
             anchors.margins: 8
             spacing: 6
+            visible: launcher.categoriesExpanded
 
-            RowLayout {
+            Rectangle {
+              id: categoryHeader
+
               Layout.fillWidth: true
+              Layout.preferredHeight: 30
+              radius: 3
+              color: categoryHeaderHover.hovered ? Theme.surface0 : Theme.surface1
 
-              Text {
-                Layout.fillWidth: true
-                text: "Kategorien"
-                color: Theme.subtext0
-                font.family: Theme.fontFamily
-                font.pixelSize: 11
-                font.bold: true
+              HoverHandler {
+                id: categoryHeaderHover
+                cursorShape: Qt.PointingHandCursor
               }
 
-              Text {
-                text: launcher.selectedCategories.length ? `${launcher.selectedCategories.length}` : "Alle"
-                color: launcher.selectedCategories.length ? Theme.teal : Theme.overlay0
-                font.family: Theme.fontFamily
-                font.pixelSize: 10
+              TapHandler {
+                onTapped: launcher.categoriesExpanded = false
+              }
+
+              RowLayout {
+                anchors.fill: parent
+                anchors.leftMargin: 8
+                anchors.rightMargin: 8
+                spacing: 6
+
+                Text {
+                  text: ">"
+                  color: categoryHeaderHover.hovered ? Theme.text : Theme.overlay0
+                  font.family: Theme.fontFamily
+                  font.pixelSize: 14
+                  font.bold: true
+                }
+
+                Text {
+                  Layout.fillWidth: true
+                  text: "Kategorien"
+                  color: Theme.subtext0
+                  font.family: Theme.fontFamily
+                  font.pixelSize: 11
+                  font.bold: true
+                }
+
+                Text {
+                  text: launcher.selectedCategories.length ? `${launcher.selectedCategories.length}` : "Alle"
+                  color: launcher.selectedCategories.length ? Theme.teal : Theme.overlay0
+                  font.family: Theme.fontFamily
+                  font.pixelSize: 10
+                }
               }
             }
 

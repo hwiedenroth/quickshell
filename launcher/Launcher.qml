@@ -17,6 +17,9 @@ Scope {
   property var categories: []
   property var selectedCategories: []
   property bool categoriesExpanded: false
+  property bool cursorVisible: false
+  property bool hasCursorPosition: false
+  property point lastCursorPosition: Qt.point(0, 0)
 
   function ensureSelectedVisible() {
     if (!filteredEntries.length)
@@ -113,6 +116,8 @@ Scope {
 
   function show() {
     opened = true
+    cursorVisible = false
+    hasCursorPosition = false
     categoriesExpanded = false
     searchField.text = ""
     refreshMatches()
@@ -176,6 +181,20 @@ Scope {
       anchors.fill: parent
       color: "#99000000"
       radius: Theme.borderRadius
+
+      HoverHandler {
+        cursorShape: launcher.cursorVisible ? Qt.ArrowCursor : Qt.BlankCursor
+
+        onPointChanged: {
+          const position = point.position
+          if (launcher.hasCursorPosition
+              && (position.x !== launcher.lastCursorPosition.x || position.y !== launcher.lastCursorPosition.y))
+            launcher.cursorVisible = true
+
+          launcher.lastCursorPosition = position
+          launcher.hasCursorPosition = true
+        }
+      }
 
       TapHandler {
         onTapped: (eventPoint, button) => {
@@ -315,13 +334,14 @@ Scope {
                   Layout.fillWidth: true
                   Layout.preferredHeight: 42
                   radius: 3
-                  color: resultDelegate.index === launcher.selectedIndex || rowHover.hovered ? Theme.surface0 : "transparent"
+                  color: resultDelegate.index === launcher.selectedIndex || (launcher.cursorVisible && rowHover.hovered)
+                    ? Theme.surface0 : "transparent"
 
                   HoverHandler {
                     id: rowHover
-                    cursorShape: Qt.PointingHandCursor
+                    cursorShape: launcher.cursorVisible ? Qt.PointingHandCursor : Qt.BlankCursor
                     onHoveredChanged: {
-                      if (hovered)
+                      if (hovered && launcher.cursorVisible)
                         launcher.selectedIndex = resultDelegate.index
                     }
                   }
@@ -417,7 +437,8 @@ Scope {
           clip: true
 
           HoverHandler {
-            cursorShape: launcher.categoriesExpanded ? Qt.ArrowCursor : Qt.PointingHandCursor
+            cursorShape: !launcher.cursorVisible ? Qt.BlankCursor
+              : launcher.categoriesExpanded ? Qt.ArrowCursor : Qt.PointingHandCursor
           }
 
           TapHandler {
@@ -469,7 +490,7 @@ Scope {
 
               HoverHandler {
                 id: categoryHeaderHover
-                cursorShape: Qt.PointingHandCursor
+                cursorShape: launcher.cursorVisible ? Qt.PointingHandCursor : Qt.BlankCursor
               }
 
               TapHandler {
@@ -537,7 +558,7 @@ Scope {
 
                     HoverHandler {
                       id: categoryHover
-                      cursorShape: Qt.PointingHandCursor
+                      cursorShape: launcher.cursorVisible ? Qt.PointingHandCursor : Qt.BlankCursor
                     }
 
                     Text {

@@ -33,9 +33,8 @@ Item {
   }
 
   function dismissNotification(notification) {
-    notification.dismiss()
-    notification.tracked = false
     removeToast(notification)
+    notification.dismiss()
     stateRefreshTimer.restart()
   }
 

@@ -62,7 +62,7 @@ Rectangle {
   HoverHandler { id: cardHover }
 
   TapHandler {
-    acceptedButtons: Qt.RightButton
+    acceptedButtons: Qt.LeftButton | Qt.RightButton
     cursorShape: Qt.PointingHandCursor
     onTapped: card.dismissRequested()
   }
